@@ -1,0 +1,19 @@
+# Entrar a los contendedores
+docker exec -it <nombre_contenedor> bash
+
+# Instalar tcpdump para capturar paquetes (hay que hacerlo en cada contenedor)
+apt-get install tcpdump
+
+# Capturar tráfico en cada contenedor
+tcpdump -i eth0 -w trafico-s1.pcap port 22 &            #s1
+tcpdump -i eth0 -w trafico-c1.pcap port 22 &            #c1
+tcpdump -i eth0 -w trafico-c2.pcap port 22 &            #c2
+tcpdump -i eth0 -w trafico-c3.pcap port 22 &            #c3
+tcpdump -i lo -w trafico-c4.pcap port 22 &              #c4
+tcpdump -i eth0 -w trafico-replica.pcap port 22 &       #replica
+
+# Copiar los archivos desde el contendor al sistema operativo
+docker cp s1:trafico-s1.pcap <ruta_deseada>
+docker cp c1:trafico-c1.pcap <ruta_deseada>
+docker cp c2:trafico-c2.pcap <ruta_deseada>
+docker cp c3:trafico-c3.pcap <ruta_deseada>
